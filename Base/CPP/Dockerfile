@@ -1,0 +1,1 @@
+FROM rikorose/gcc-cmake:latest

@@ -1,0 +1,51 @@
+version: "3"
+services:
+    server:
+        image: aw_server:latest
+        volumes:
+            - ${graphic_log}:/graphic.log:rw
+            - ${server_config}:/server.conf:ro
+            - ${map}:/map.map:ro
+            - ${server_log}:/server_view.log:rw
+            - ${server_debug}:/debug.log:rw
+        environment:
+            - AICClient0Token=${client1_token}
+            - AICClient0Name=${client1_name}
+            - AICTeamName0=${client1_name}
+            - AICClient1Token=${client2_token}
+            - AICClient1Name=${client2_name}
+            - AICTeamName1=${client2_name}
+            - AICMapName=${map_name}
+        deploy:
+            resources:
+                limits:
+                    cpus: "1"
+                    memory: "3G"
+    client1:
+        image: aw_client:${client1_id}
+        volumes:
+            - ${client1_log}:/client.log:rw
+        depends_on:
+            - server
+        environment:
+            - AICToken=${client1_token}
+            - AICHostIP=server
+        deploy:
+            resources:
+                limits:
+                    cpus: "1"
+                    memory: "1G"
+    client2:
+        image: aw_client:${client2_id}
+        volumes:
+            - ${client2_log}:/client.log:rw
+        depends_on:
+            - server
+        environment:
+            - AICToken=${client2_token}
+            - AICHostIP=server
+        deploy:
+            resources:
+                limits:
+                    cpus: "1"
+                    memory: "1G"

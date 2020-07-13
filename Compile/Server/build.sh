@@ -1,0 +1,1 @@
+sudo docker build -t aw_server:latest -t aw_server:$1 .
